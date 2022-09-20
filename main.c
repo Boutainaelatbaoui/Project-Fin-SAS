@@ -20,6 +20,7 @@ Produit productTable[200];
 Produit productVendu[200];
 int nbrProduct = 0;
 int nbrProductVendu = 0;
+int nbrProductVenduJour = 0;
 
 void afficherMenu();
 void ajouterProduit();
@@ -345,7 +346,7 @@ void supprimerParCode(){
 }
 
 void statistiqueVente(){
-    int i, j, nbrProductVenduJour;
+    int i, j;
     float totalPrix = 0;
     float moyennePrix;
     for(i=0; i<nbrProductVendu; i++){
@@ -355,8 +356,6 @@ void statistiqueVente(){
         if(productVendu[i].jour == jour){
             totalPrix += productVendu[i].prix;
             nbrProductVenduJour++;
-            moyennePrix = totalPrix / nbrProductVenduJour;
-
 
             if(productVendu[i].prixttc > maxPrixttc){
                 maxPrixttc = productVendu[i].prixttc;
@@ -365,6 +364,7 @@ void statistiqueVente(){
                minPrixttc = productVendu[i].prixttc;
            }
         }
+        moyennePrix = totalPrix / nbrProductVenduJour;
     }
     printf("Le total des prix des produits vendus en journee courante est:       %.2f\n", totalPrix);
     printf("La moyenne des prix des produits vendus en journee courante est:     %.2f\n", moyennePrix);
