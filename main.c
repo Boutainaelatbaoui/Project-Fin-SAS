@@ -48,10 +48,12 @@ int main(){
         printf("======================================================================================\n");
         switch(choix){
             case 1:
+
                 ajouterProduit();
                 printf("\nVotre produit est ajoute avec succes.\n");
                 break;
             case 2:
+
                 ajouterPlusProduit();
                 printf("\nVos produits sont ajoutes avec succes.\n");
                 break;
@@ -140,6 +142,7 @@ void afficherMenu(){
 }
 
 void ajouterProduit(){
+
     printf("Veuillez entrer le code produit: ");
     scanf("%d", &productTable[nbrProduct].code);
     printf("\nVeuillez entrer le nom de produit: ");
@@ -154,6 +157,7 @@ void ajouterProduit(){
 
 void ajouterPlusProduit(){
     int nbr, i;
+
     printf("Veuillez entrer le nombre de produit: ");
     scanf("%d", &nbr);
     for(i=0; i<nbr; i++){
@@ -225,8 +229,8 @@ void acheterProduit(){
                 productVendu[i].code = productTable[i].code;
                 strcpy(productVendu[i].nom, productTable[i].nom);
                 productVendu[i].quantite = productTable[i].quantite;
-                productVendu[i].prix = productTable[i].prix;
-                productVendu[i].prixttc = productTable[i].prixttc;
+                productVendu[i].prix = productTable[i].prix * quantite;
+                productVendu[i].prixttc = productTable[nbrProduct].prix + (productTable[nbrProduct].prix * 0.15);
 
                 nbrProductVendu++;
 
