@@ -13,6 +13,9 @@ typedef struct{
     int jour, mois, annee;
 }Produit;
 
+float maxPrixttc = 0;
+float minPrixttc = 0;
+
 Produit productTable[200];
 Produit productVendu[200];
 int nbrProduct = 0;
@@ -101,7 +104,7 @@ int main(){
                     statistiqueVente();
                 }
                 else{
-                    printf("Il n'existe aucun produit dans la journee ");
+                    printf("Il n'existe aucun produit dans cette journee!!\n");
                 }
                 break;
             case 13:
@@ -263,6 +266,7 @@ void rechercherParCode(){
 }
 
 void rechercherParQuantite(){
+    system("cls");
     int i, quantite;
     printf("Veuillez entrer la quantite de produit: ");
     scanf("%d", &quantite);
@@ -341,31 +345,31 @@ void supprimerParCode(){
 }
 
 void statistiqueVente(){
-    int i, j;
+    int i, j, nbrProductVenduJour;
     float totalPrix = 0;
-    float moyennePrix, maxPrix, minPrix;
+    float moyennePrix;
     for(i=0; i<nbrProductVendu; i++){
         time_t t = time(NULL);
         struct tm tm = *localtime(&t);
         int jour = tm.tm_mday;
         if(productVendu[i].jour == jour){
             totalPrix += productVendu[i].prix;
-            moyennePrix = totalPrix / nbrProductVendu;
-            for(j=i+1; j<nbrProductVendu; j++){
-                if(produitVendu[i].prixttc > maxPrix){
-                    maxPrix = productVendu[i].prix;
-                }
-                if(productVendu[i].prix < productVendu[j].prix){
-                    minPrix = productVendu[i].prix;
-                }
+            nbrProductVenduJour++;
+            moyennePrix = totalPrix / nbrProductVenduJour;
 
+
+            if(productVendu[i].prixttc > maxPrixttc){
+                maxPrixttc = productVendu[i].prixttc;
             }
+            if (productVendu[i].prixttc < minPrixttc || minPrixttc == 0) {
+               minPrixttc = productVendu[i].prixttc;
+           }
         }
     }
     printf("Le total des prix des produits vendus en journee courante est:       %.2f\n", totalPrix);
     printf("La moyenne des prix des produits vendus en journee courante est:     %.2f\n", moyennePrix);
-    printf("Le max des prix des produits vendus en journee courante est:         %.2f\n", maxPrix);
-    printf("Le min des prix des produits vendus en journee courante est:         %.2f\n", minPrix);
+    printf("Le max des prix des produits vendus en journee courante est:         %.2f\n", maxPrixttc);
+    printf("Le min des prix des produits vendus en journee courante est:         %.2f\n", minPrixttc);
 }
 
 void quitterApp(){
