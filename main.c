@@ -185,7 +185,7 @@ void listerOrdreAlphabetique(){
     Produit temp;
     for(i=0; i<nbrProduct; i++){
         for(j=i+1; j<nbrProduct; j++){
-            if( strcmp(productTable[i].nom, productTable[j].nom) > 0) {
+            if( strcasecmp(productTable[i].nom, productTable[j].nom) > 0) {
                 Produit temp =  productTable[i];
                 productTable[i] = productTable[j];
                 productTable[j] = temp;
@@ -335,7 +335,7 @@ void etatStock(){
 
 void alimenterStock(){
 
-    int compteur;
+    int compteur = 0;
     int i, code, quantite;
     printf("Entrer le code produit:\n");
     scanf("%d", &code);
