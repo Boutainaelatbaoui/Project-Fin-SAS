@@ -70,7 +70,7 @@ int main(){
             case 4:
                 if(nbrProduct != 0){
                     printf("\n---------------La liste de vos produits Lister selon l'ordre decroissant du prix---------------\n");
-                    listerOrdrePrix();
+                    listerOrdreAlphabetique();
                 }
                 else{
                     printf("Il n y a pas des produits!!\n");
@@ -79,7 +79,7 @@ int main(){
             case 5:
                 if(nbrProduct != 0){
                     printf("\n---------------La liste de vos produits Lister selon l'ordre alphabetique croissant du nom---------------\n");
-                    listerOrdreAlphabetique();
+                    listerOrdrePrix();
                 }
                 else{
                     printf("Il n y a pas des produits!!\n");
@@ -248,10 +248,13 @@ void acheterProduit(){
                        productTable[i].nom, jourVente, moisVente, anneeVente);
 
             }
+
             else{
                 printf("La quantite est insuffissante!!\n");
             }
+
             compteur++;
+
             break;
         }
     }
