@@ -353,7 +353,7 @@ void alimenterStock(){
         }
     }
     if(compteur == 0){
-        printf("Produit introuvable\n");
+        printf("Produit introuvable!!\n");
     }
 }
 
@@ -401,7 +401,7 @@ void statistiqueVente(){
     }
 
     else{
-        printf("Aucun produit vendu dans cette journee.\n");
+        printf("il n'existe aucun produit vendu dans cette journee.\n");
     }
 }
 
