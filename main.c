@@ -361,7 +361,6 @@ void supprimerParCode(){
 
     int compteur = 0;
     int i, j, code;
-    Produit temp;
 
     printf("Veuillez entrer le code produit: ");
     scanf("%d", &code);
