@@ -10,17 +10,18 @@ typedef struct{
     int quantite;
     float prix;
     float prixttc;
-    int jour, mois, annee;
 }Produit;
 
+float prixVente = 0;
+float totalPrix = 0;
+float moyennePrix = 0;
 float maxPrixttc = 0;
 float minPrixttc = 0;
+int jourVente, moisVente, anneeVente;
 
 Produit productTable[200];
-Produit productVendu[200];
 int nbrProduct = 0;
 int nbrProductVendu = 0;
-int nbrProductVenduJour = 0;
 
 void afficherMenu();
 void ajouterProduit();
@@ -223,19 +224,28 @@ void acheterProduit(){
                 time_t t = time(NULL);
                 struct tm tm = *localtime(&t);
 
-                productVendu[i].jour = tm.tm_mday;
-                productVendu[i].mois = tm.tm_mon + 1;
-                productVendu[i].annee = tm.tm_year + 1900;
-                productVendu[i].code = productTable[i].code;
-                strcpy(productVendu[i].nom, productTable[i].nom);
-                productVendu[i].quantite = productTable[i].quantite;
-                productVendu[i].prix = productTable[i].prix * quantite;
-                productVendu[i].prixttc = productTable[nbrProduct].prix + (productTable[nbrProduct].prix * 0.15);
+                jourVente = tm.tm_mday;
+                moisVente = tm.tm_mon + 1;
+                anneeVente = tm.tm_year + 1900;
+
+                prixVente = (productTable[i].prix + productTable[i].prix * 0.15) * quantite;
+
+                totalPrix += prixVente;
 
                 nbrProductVendu++;
 
-                printf("Vous avez achete le produit %s avec un prix TTC de %.2f DH, le %d-%d-%d.\n",
-                       productTable[i].nom, productTable[i].prixttc, productVendu[i].jour, productVendu[i].mois, productVendu[i].annee);
+                moyennePrix = totalPrix/nbrProductVendu;
+
+                if(totalPrix > maxPrixttc){
+                    maxPrixttc = totalPrix;
+                }
+
+                if(totalPrix < minPrixttc || minPrixttc == 0){
+                    minPrixttc = totalPrix;
+                }
+
+                printf("Vous avez achete le produit %s le %d-%d-%d.\n",
+                       productTable[i].nom, jourVente, moisVente, anneeVente);
 
             }
             else{
@@ -251,9 +261,12 @@ void acheterProduit(){
 }
 
 void rechercherParCode(){
+
+    int compteur = 0;
     int i, code;
     printf("Veuillez entrer le code produit: ");
     scanf("%d", &code);
+
     for(i=0; i<nbrProduct; i++){
         if(productTable[i].code == code){
             printf("Le code produit :           %d\n", productTable[i].code);
@@ -262,20 +275,24 @@ void rechercherParCode(){
             printf("Le prix de produit :        %.2f DH\n", productTable[i].prix);
             printf("Le prix TTC de produit :    %.2f DH\n", productTable[i].prixttc);
             printf("\n-------------------------------------------------------\n");
+            compteur++;
             break;
         }
-        else{
-            printf("Produit introuvable!!\n");
-        }
+    }
+    if(compteur == 0){
+        printf("Produit introuvable!!\n");
     }
 }
 
 void rechercherParQuantite(){
-    system("cls");
+
+    int compteur = 0;
     int i, quantite;
     printf("Veuillez entrer la quantite de produit: ");
     scanf("%d", &quantite);
+
     for(i=0; i<nbrProduct; i++){
+
         if(productTable[i].quantite == quantite){
             printf("Le code produit :           %d\n", productTable[i].code);
             printf("Le nom de produit :         %s\n", productTable[i].nom);
@@ -283,15 +300,18 @@ void rechercherParQuantite(){
             printf("Le prix de produit :        %.2f DH\n", productTable[i].prix);
             printf("Le prix TTC de produit :    %.2f DH\n", productTable[i].prixttc);
             printf("\n-------------------------------------------------------\n");
+            compteur++;
             break;
         }
-        else{
-            printf("Produit introuvable!!\n");
-        }
+    }
+    if(compteur == 0){
+        printf("Produit introuvable!!\n");
     }
 }
 
 void etatStock(){
+
+    int compteur = 0;
     int i;
     for(i=0; i<nbrProduct; i++){
         if(productTable[i].quantite < 3){
@@ -301,83 +321,91 @@ void etatStock(){
             printf("Le prix de produit :        %.2f DH\n", productTable[i].prix);
             printf("Le prix TTC de produit :    %.2f DH\n", productTable[i].prixttc);
             printf("\n-------------------------------------------------------\n");
+            compteur ++;
             break;
         }
-        else{
-            printf("Tous les produits sont superieurs de 3.\n");
-        }
+    }
+    if(compteur == 0){
+        printf("Tous les produits sont superieurs de 3.\n");
     }
 }
 
 void alimenterStock(){
+
+    int compteur;
     int i, code, quantite;
     printf("Entrer le code produit:\n");
     scanf("%d", &code);
+
     for(i=0; i<nbrProduct; i++){
         if(code == productTable[i].code){
+
             printf("Entrer la quantite a ajouter: ");
             scanf("%d", &quantite);
             printf("La quantite de produit avec le code %d avant l'ajout est: %d\n", productTable[i].code, productTable[i].quantite);
             productTable[i].quantite += quantite;
             printf("La quantite de produit avec le code %d apres l'ajout est: %d\n", productTable[i].code, productTable[i].quantite);
+            compteur++;
             break;
         }
-        else{
-            printf("Produit introuvable\n");
-        }
+    }
+    if(compteur == 0){
+        printf("Produit introuvable\n");
     }
 }
 
 void supprimerParCode(){
+
+    int compteur = 0;
     int i, j, code;
     Produit temp;
+
     printf("Veuillez entrer le code produit: ");
     scanf("%d", &code);
+
     for(i=0; i<nbrProduct; i++){
         if(code == productTable[i].code){
             for(j=i; j<nbrProduct; j++){
-                temp = productTable[j];
+
                 productTable[j] = productTable[j+1];
-                productTable[j+1] = temp;
             }
+
             nbrProduct--;
-            printf("Le produit avec le code %d est supprime avec succes.\n", productTable[i].code);
+
+            printf("Le produit est supprime avec succes.\n", productTable[i].code);
+
+            compteur++;
         }
-        else{
-            printf("Produit introuvable!!\n");
-        }
+    }
+    if(compteur == 0){
+
+        printf("Produit introuvable!!\n");
+
     }
 }
 
 void statistiqueVente(){
-    int i, j;
-    float totalPrix = 0;
-    float moyennePrix;
-    for(i=0; i<nbrProductVendu; i++){
-        time_t t = time(NULL);
-        struct tm tm = *localtime(&t);
-        int jour = tm.tm_mday;
-        if(productVendu[i].jour == jour){
-            totalPrix += productVendu[i].prix;
-            nbrProductVenduJour++;
 
-            if(productVendu[i].prixttc > maxPrixttc){
-                maxPrixttc = productVendu[i].prixttc;
-            }
-            if (productVendu[i].prixttc < minPrixttc || minPrixttc == 0) {
-               minPrixttc = productVendu[i].prixttc;
-           }
-        }
-        moyennePrix = totalPrix / nbrProductVenduJour;
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+
+    int jour = tm.tm_mday;
+
+    if(jourVente == jour){
+        printf("Le total des prix des produits vendus en journee courante est:       %.2f\n", totalPrix);
+        printf("La moyenne des prix des produits vendus en journee courante est:     %.2f\n", moyennePrix);
+        printf("Le max des prix des produits vendus en journee courante est:         %.2f\n", maxPrixttc);
+        printf("Le min des prix des produits vendus en journee courante est:         %.2f\n", minPrixttc);
     }
-    printf("Le total des prix des produits vendus en journee courante est:       %.2f\n", totalPrix);
-    printf("La moyenne des prix des produits vendus en journee courante est:     %.2f\n", moyennePrix);
-    printf("Le max des prix des produits vendus en journee courante est:         %.2f\n", maxPrixttc);
-    printf("Le min des prix des produits vendus en journee courante est:         %.2f\n", minPrixttc);
+
+    else{
+        printf("Aucun produit vendu dans cette journee.\n");
+    }
 }
 
 void quitterApp(){
+
     printf("Au revoir\n");
     exit(0);
-}
 
+}
