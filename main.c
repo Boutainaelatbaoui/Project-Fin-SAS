@@ -236,12 +236,12 @@ void acheterProduit(){
 
                 moyennePrix = totalPrix/nbrProductVendu;
 
-                if(totalPrix > maxPrixttc){
-                    maxPrixttc = totalPrix;
+                if(prixVente > maxPrixttc){
+                    maxPrixttc = prixVente;
                 }
 
-                if(totalPrix < minPrixttc || minPrixttc == 0){
-                    minPrixttc = totalPrix;
+                if(prixVente < minPrixttc || minPrixttc == 0){
+                    minPrixttc = prixVente;
                 }
 
                 printf("Vous avez achete le produit %s le %d-%d-%d.\n",
